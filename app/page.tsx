@@ -1,14 +1,20 @@
 import { useState } from "react";
-import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChapterList from "@/components/chapter-list";
 import FilterControls from "@/components/filter-controls";
 
+interface FilterState {
+  classes?: string[];
+  units?: string[];
+  status?: string | null;
+  isWeakChapter?: boolean;
+}
+
 export default function Home() {
-  const [filters, setFilters] = useState<any>({});
+  const [filters, setFilters] = useState<FilterState>({});
   const [sort, setSort] = useState<string>("chapter");
 
-  const handleFilterChange = (newFilters: any) => {
+  const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
   };
 

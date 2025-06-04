@@ -15,17 +15,58 @@ interface Chapter {
   isWeakChapter: boolean;
 }
 
-export default function ChapterList({ subject }: { subject: string }) {
+interface ChapterListProps {
+  subject: string;
+  filters: {
+    classes?: string[];
+    units?: string[];
+    status?: string | null;
+    isWeakChapter?: boolean;
+  };
+  sort: string;
+}
+
+export default function ChapterList({
+  subject,
+  filters,
+  sort,
+}: ChapterListProps) {
   const [chapters, setChapters] = useState<Chapter[]>([]);
 
   useEffect(() => {
-    // In a real application, you would fetch data here.
-    // For this task, we are using the mock JSON data.
-    const filteredChapters = chaptersData.filter(
+    let filteredChapters = chaptersData.filter(
       (chapter) => chapter.subject.toLowerCase() === subject.toLowerCase()
     );
-    setChapters(filteredChapters);
-  }, [subject]);
+
+    // Apply filters
+    if (filters.classes && filters.classes.length > 0) {
+      filteredChapters = filteredChapters.filter((chapter) =>
+        filters.classes?.includes(chapter.class)
+      );
+    }
+    if (filters.units && filters.units.length > 0) {
+      filteredChapters = filteredChapters.filter((chapter) =>
+        filters.units?.includes(chapter.unit)
+      );
+    }
+    if (filters.status) {
+      filteredChapters = filteredChapters.filter(
+        (chapter) => chapter.status === filters.status
+      );
+    }
+    if (filters.isWeakChapter) {
+      filteredChapters = filteredChapters.filter(
+        (chapter) => chapter.isWeakChapter
+      );
+    }
+
+    // Apply sorting
+    if (sort === "chapter") {
+      filteredChapters.sort((a, b) => a.chapter.localeCompare(b.chapter));
+    } // Add more sorting options here later
+
+    setChapters(filteredChapters as Chapter[]);
+  }, [subject, filters, sort]);
 
   return (
     <div className="mt-4">
