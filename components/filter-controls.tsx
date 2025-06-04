@@ -82,7 +82,7 @@ export default function FilterControls({
   // TODO: Implement UI for filters and sorting using shadcn/ui components
 
   return (
-    <div className="flex items-center space-x-4 mb-4">
+    <div className="flex flex-wrap items-center gap-4 mb-4">
       <div>Filter by:</div>
       {/* Class Filter */}
       <DropdownMenu>
